@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 #-Recreation of pong by cjm
 import pygame
+#debug = False #True for debug mode
 
 BLACK = (0,0,0)
 WHITE = (255,255,255)
@@ -24,23 +25,22 @@ def main():
 
     pos1 = [5,screeny/2-padH/2] #---------------------
     pos2 = [screenx-5-padW, screeny/2-padH/2]#-start the paddles off with a margin of 5, halfway down the screen 
-    ball = [screenx/2, screeny/2, ]
+    ball = [screenx/2, screeny/2]
     done = False
     clock = pygame.time.Clock()
-    def islimit(paddle):# usage: "islimit(1)" returns "top" "bottom" or "mid" based on where the first paddle is
+    def islimit(paddle):# usage: "islimit(1)" returns "top" "bot" or "mid" based on where the first paddle is
         if paddle == 1:
-            #TODO
             if pos1[1] <= 0:
                 return "top"
             elif pos1[1] + padH >= screeny:
-                return "bottom"
+                return "bot"
             else:
                 return "mid"
         if paddle == 2:
             if pos2[1] <= 0:
                 return "top"
             elif pos2[1] + padH >= screeny:
-                 return "bottom"
+                 return "bot"
             else:
                  return "mid"
     #--Main Loop--
@@ -53,18 +53,28 @@ def main():
                     done = True
                 if event.key == pygame.K_w and islimit(1) != "top":
                     pos1[1] -= 10
-                if event.key == pygame.K_s and islimit(1) != "bottom":
+                if event.key == pygame.K_s and islimit(1) != "bot":
                     pos1[1] += 10
                 #if event.key == pygame.K_w:
                 #    pos1[1] -= 10
                 #if event.key == pygame.K_s:
                 #    pos1[1] += 10
         #-- Game Logic
-        print(islimit(1))
-        #-- Drawing COde
+        #print(islimit(1))
+        #-- Drawing Code
         screen.fill(BLACK)
         pygame.draw.rect(screen, (WHITE), (pos1[0], pos1[1], padW, padH)) #draw the first paddle
         pygame.draw.rect(screen, (WHITE), (pos2[0], pos2[1], padW, padH)) #draw the second paddle
+        pygame.draw.rect(screen, (WHITE), (ball[0], ball[1], 10, 10))
+        #debug stuff
+        try:
+            if debug == True:
+                if islimit(1) == "top":
+                    pygame.draw.rect(screen, (GREEN), (0, 0, 10, 10))
+                if islimit(1) == "bot":
+                    pygame.draw.rect(screen, (GREEN), (0, screeny-10, 10, 10))
+        except:
+            pass
         pygame.display.flip()
 
         clock.tick(60)
