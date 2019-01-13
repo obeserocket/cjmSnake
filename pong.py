@@ -22,27 +22,37 @@ def main():
 
     padW = 40 #the width of the paddle
     padH = 100 #the height of the paddle
-
+    
+    ballWidth = 10
     pos1 = [5,screeny/2-padH/2] #---------------------
     pos2 = [screenx-5-padW, screeny/2-padH/2]#-start the paddles off with a margin of 5, halfway down the screen 
-    ball = [screenx/2, screeny/2]
+    ball = [screenx/2, screeny/2, ballWidth, ballWidth] #ball[] is x, y, run, rise. Run and rise are x velocity and y velocity respectively.
     done = False
     clock = pygame.time.Clock()
-    def islimit(paddle):# usage: "islimit(1)" returns "top" "bot" or "mid" based on where the first paddle is
-        if paddle == 1:
+    def islimit(obj):# usage: "islimit(1)" returns "top" "bot" or "mid" based on where the first paddle is
+        if obj == 1:
             if pos1[1] <= 0:
                 return "top"
             elif pos1[1] + padH >= screeny:
                 return "bot"
             else:
                 return "mid"
-        if paddle == 2:
+        if obj == 2:
             if pos2[1] <= 0:
                 return "top"
             elif pos2[1] + padH >= screeny:
                  return "bot"
             else:
                  return "mid"
+        if obj == 3:
+            if ball[0] <= 0:
+                return "left"
+            if ball[0] + ballWidth >= screenx:
+                return "right"
+            if ball[1] <= 0:
+                return "top"
+            if ball[1] + ballWidth >= screeny:
+                return "bot"
     #--Main Loop--
     while not done:
         for event in pygame.event.get(): #----Event Processing Loop
@@ -61,6 +71,7 @@ def main():
                 #    pos1[1] += 10
         #-- Game Logic
         #print(islimit(1))
+        
         #-- Drawing Code
         screen.fill(BLACK)
         pygame.draw.rect(screen, (WHITE), (pos1[0], pos1[1], padW, padH)) #draw the first paddle
