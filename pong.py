@@ -17,7 +17,7 @@ def main():
     screen = pygame.display.set_mode(size)
     pygame.display.set_caption("PONG")
 
-    #pygame.key.set_repeat(50, 1) #causes holding a key to send multiple pygame.KEYDOWN events
+    pygame.key.set_repeat(50, 1) #causes holding a key to send multiple pygame.KEYDOWN events
 
     padW = 40 #the width of the paddle
     padH = 100 #the height of the paddle
@@ -27,7 +27,22 @@ def main():
     ball = [screenx/2, screeny/2, ]
     done = False
     clock = pygame.time.Clock()
-
+    def islimit(paddle):# usage: "islimit(1)" returns "top" "bottom" or "mid" based on where the first paddle is
+        if paddle == 1:
+            #TODO
+            if pos1[1] <= 0:
+                return "top"
+            elif pos1[1] + padH >= screeny:
+                return "bottom"
+            else:
+                return "mid"
+        if paddle == 2:
+            if pos2[1] <= 0:
+                return "top"
+            elif pos2[1] + padH >= screeny:
+                 return "bottom"
+            else:
+                 return "mid"
     #--Main Loop--
     while not done:
         for event in pygame.event.get(): #----Event Processing Loop
@@ -36,21 +51,17 @@ def main():
             if event.type == pygame.KEYDOWN: #If event was a keypress
                 if event.key == pygame.K_ESCAPE:
                     done = True
-                if event.key == pygame.K_w:
+                if event.key == pygame.K_w and islimit(1) != "top":
                     pos1[1] -= 10
-                if event.key == pygame.K_s:
+                if event.key == pygame.K_s and islimit(1) != "bottom":
                     pos1[1] += 10
                 #if event.key == pygame.K_w:
                 #    pos1[1] -= 10
                 #if event.key == pygame.K_s:
                 #    pos1[1] += 10
-                if event.key == pygame.K_UP:
-                    pos2[1] -= 10 #Move paddle2 up one REMINDER: x starts at top
-                if event.key == pygame.K_DOWN:
-                    pos2[1] += 10 #Move paddle2 down one
         #-- Game Logic
-
-        #-- Drawing Code
+        print(islimit(1))
+        #-- Drawing COde
         screen.fill(BLACK)
         pygame.draw.rect(screen, (WHITE), (pos1[0], pos1[1], padW, padH)) #draw the first paddle
         pygame.draw.rect(screen, (WHITE), (pos2[0], pos2[1], padW, padH)) #draw the second paddle
