@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 #-Recreation of pong by cjm
 import pygame
-#debug = False #True for debug mode
+debug = False #True for debug mode
 
 BLACK = (0,0,0)
 WHITE = (255,255,255)
@@ -76,7 +76,7 @@ def main():
         screen.fill(BLACK)
         pygame.draw.rect(screen, (WHITE), (pos1[0], pos1[1], padW, padH)) #draw the first paddle
         pygame.draw.rect(screen, (WHITE), (pos2[0], pos2[1], padW, padH)) #draw the second paddle
-        pygame.draw.rect(screen, (WHITE), (ball[0], ball[1], 10, 10))
+        pygame.draw.rect(screen, (WHITE), (ball[0], ball[1], 10, 10)) #draw the ball
         #debug stuff
         try:
             if debug == True:
